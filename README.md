@@ -16,7 +16,7 @@ Help
 
 for main help
 
-    subgal make-thumbs help
+    subgal make-thumbs --help
 
 for help with `subgal make-thumbs`, etc.
 
