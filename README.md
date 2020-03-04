@@ -31,10 +31,10 @@ subgal make-indices
 
 `subgal make-indices` creates .html files which are a gallery of images based on a json file as output by `subgal make-thumbs`
 
-subgal combine
---------------
+subgal update
+-------------
 
-`subgal update` combines 
+`subgal update` combines information from multiple json files into one.
 
 
 [sortphotos]: https://github.com/andrewning/sortphotos
