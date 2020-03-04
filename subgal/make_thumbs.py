@@ -33,9 +33,9 @@ Options:
   -v, --verbosity                 Number of v's is level of verbosity
                                   (No -v results in silence, -vvvv is
                                   super verbose)
-  -c, --corr-file=<filename.json> If given, json matching original filenames to
+  -c, --corr-file=<filename.json> json matching original filenames to
                                   tuples of paths to thumbnails will be put in
-                                  <filename.json>
+                                  <filename.json>  [DEFAULT: correlations.json]
   -b, --bounding-box=<600x400>    Bounding box for thumbnails.  Any two numbers
                                   separated by an 'x'.  Multiple -b's yields
                                   multiple sizes of thumbnails.  If no -b
@@ -84,10 +84,10 @@ def main(argv):
 
   json_filename = args["--corr-file"]
 
-  if json_filename != None:
-    correspondence = {}
-  else:
-    correspondence = None
+  if json_filename == None:
+    json_filename = "correlations.json"
+
+  correspondence = {}
 
   dryrun = args["--dry-run"]
 
@@ -164,9 +164,8 @@ def main(argv):
             size_tuples=size_tuples,
             force=force, dryrun=dryrun, correspondence=correspondence)
 
-  if json_filename != None:
-    with open(json_filename, "w") as f:
-      json.dump(correspondence, f, sort_keys=True, indent=2)
+  with open(json_filename, "w") as f:
+    json.dump(correspondence, f, sort_keys=True, indent=2)
 
 
 def can_be_thumbnailed(path):
