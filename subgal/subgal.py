@@ -30,6 +30,10 @@ def main():
     from subgal import make_thumbs
     exit(make_thumbs.main(argv))
 
+  if args['<command>'] == "make-indices":
+    from subgal import make_indices
+    exit(make_indices.main(argv))
+
 
 if __name__ == "__main__":
   main()
