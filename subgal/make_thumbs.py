@@ -10,6 +10,8 @@ import magic
 import subprocess
 import hashlib
 import json
+from itertools import chain
+from collections import defaultdict
 
 
 __doc__ = """
@@ -164,6 +166,17 @@ def main(argv):
             size_tuples=size_tuples,
             force=force, dryrun=dryrun, correspondence=correspondence)
 
+  # If json_filename already exists, merge new stuff into it
+  if os.path.exists(json_filename):
+    vprint(1, verbosity, f"{json_filename} already exists.  Merging new "
+        "information into it")
+    with open(json_filename, "r") as f:
+      already_there = json.load(f)
+      merged = defaultdict(list)
+      for key, value in chain(already_there.items(), correspondence.items()):
+        merged[key].append(value)
+      correspondence = merged
+
   with open(json_filename, "w") as f:
     json.dump(correspondence, f, sort_keys=True, indent=2)
 
@@ -201,7 +214,7 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
   # TODO Handle collisions
   hashhex = sha256sum(filename)
   if correspondence != None:
-    correspondence[filename] = []
+    correspondence[filename] = {}
 
   thumb_dir = os.path.join(thumb_root_dir_name, hashhex)
   vprint(1, verbosity, f"Putting thumbs in {thumb_dir}")
@@ -220,7 +233,7 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
     try:
       create_thumbnail(filename, thumb_path, size_tuple, verbosity)
       if correspondence != None:
-        correspondence[filename].append(thumb_path)
+        correspondence[filename][s_dimension] = thumb_path
     except OSError as e:
       vprint(1, verbosity, f"Error thumbnailing {filename}: {str(e)}")
       return
