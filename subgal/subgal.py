@@ -14,6 +14,7 @@ Commands:
   make-thumbs
   make-indices
   update
+  host
 
 See 'subgal <command> --help' for more information on a specific command."""
 
@@ -34,6 +35,9 @@ def main():
     from subgal import make_indices
     exit(make_indices.main(argv))
 
+  if args['<command>'] == "host":
+    from subgal import host
+    exit(host.main(argv))
 
 if __name__ == "__main__":
   main()
