@@ -172,13 +172,37 @@ def main(argv):
         "information into it")
     with open(json_filename, "r") as f:
       already_there = json.load(f)
-      merged = defaultdict(list)
-      for key, value in chain(already_there.items(), correspondence.items()):
-        merged[key].append(value)
-      correspondence = merged
+      correspondence = combine_dicts(correspondence, already_there)
 
   with open(json_filename, "w") as f:
     json.dump(correspondence, f, sort_keys=True, indent=2)
+
+
+def test_combine_dicts():
+  x = {
+    1: [2, 3],
+    4: [5],
+    6: [],
+    8: [9, 10, 11],
+  }
+  y = {
+    6: [13, 14],
+    8: [15],
+    11: [12],
+    16: [],
+  }
+  assert(combine_dicts(x, y) == {
+    1: [2, 3],
+    4: [5],
+    6: [13, 14],
+    8: [15, 9, 10, 11],
+    11: [12],
+    16: [],
+  })
+
+
+def combine_dicts(x, y):
+  pass
 
 
 def can_be_thumbnailed(path):

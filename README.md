@@ -25,6 +25,10 @@ subgal make-thumbs
 
 `subgal make-thumbs` creates a directory full of thumbnails indexed by sha256 and outputs the correspondence to a json file.
 
+EXAMPLE
+
+    subgal make-thumbs -r example_images
+
 
 subgal make-indices
 -------------------
