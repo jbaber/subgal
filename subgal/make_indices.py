@@ -38,6 +38,29 @@ def directories_to_original_filenames(correlation):
   return to_return
 
 
+def create_index(index_filename, directory, correlations, verbosity=0,
+    thumb_key="100x100", big_key="1000x1000"):
+  v = verbosity
+  vprint(1, v, f"Creating {index_filename}")
+  with open(index_filename, 'w') as f:
+    for original_filename in correlations:
+      if os.path.dirname(original_filename) == directory:
+        vprint(2, v, f"  {original_filename}")
+
+        # Here's where there are choices  I'm mapping one thumbnail to
+        # another because originals are always so big
+        try:
+          thumb = correlations[original_filename][thumb_key]
+          big = correlations[original_filename][big_key]
+        except KeyError as e:
+          message = f"Either {thumb_key} or {big_key} doesn't exist " \
+              + f"for {original_filename}"
+          vprint(1, v, message)
+          raise ValueError(message)
+
+        f.write(f"thumb: {thumb}\nbig: {big}\n")
+
+
 def main(argv):
   args = docopt(__doc__, argv=argv)
 
@@ -51,11 +74,14 @@ def main(argv):
     correlations = json.load(f)
 
   dtoof = directories_to_original_filenames(correlations)
-  print(dtoof)
 
   for directory in dtoof.keys():
     index_filename = "index_" + directory.replace(os.path.sep, "__") + ".html"
-    vprint(1, v, f"Creating {index_filename}")
+    try:
+      create_index(index_filename, directory, correlations,
+          verbosity=verbosity)
+    except ValueError as e:
+      vprint(1, v, "Missing some thumbs")
 
 
 if __name__ == "__main__":
