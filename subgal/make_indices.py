@@ -10,7 +10,6 @@ __doc__ = """Usage: subgal make-indices [options] <correlations.json>
 Options:
 -c, --clobber                    Allow overwriting of existing files
 -h, --help                       This help
--v, --version                    Print version and exit
 -i, --index-root=<path>          Where the index_....html files will be created
                                  [DEFAULT: .]
 -b, --base-url=<url>             All images and indices will have <url> at the beginning

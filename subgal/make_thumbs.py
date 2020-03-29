@@ -31,7 +31,6 @@ Options:
                                   "-x one -x two" etc.
   -X, --excludes-file=<filename>  File with one filename/dirname
                                   per line to be excluded
-  -V, --version                   Show version
   -v, --verbosity                 Number of v's is level of verbosity
                                   (No -v results in silence, -vvvv is
                                   super verbose)
