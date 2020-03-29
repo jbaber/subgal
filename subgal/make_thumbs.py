@@ -105,7 +105,7 @@ def main(argv):
 
   thumb_root_dir_name = args["--thumb-root-dir"]
   try:
-    mkdir_exist(thumb_root_dir_name)
+    mkdir_exist(thumb_root_dir_name, dryrun=dryrun)
   except TypeError as e:
     print(f"'{thumb_root_dir_name}' already exists and isn't a directory")
     exit(1)
@@ -174,8 +174,12 @@ def main(argv):
       already_there = json.load(f)
       correspondence = combine_dicts(already_there, correspondence)
 
-  with open(json_filename, "w") as f:
-    json.dump(correspondence, f, sort_keys=True, indent=2)
+  if dryrun:
+    vprint(2, v, f"Would create {json_filename} (dryrun)")
+  else:
+    vprint(2, v, f"Writing {json_filename}")
+    with open(json_filename, "w") as f:
+      json.dump(correspondence, f, sort_keys=True, indent=2)
 
 
 def test_combine_dicts():
