@@ -16,7 +16,6 @@ from collections import defaultdict
 
 __doc__ = """
 Usage: subgal make-thumbs [options] [-x <path> ...] [-b <600x400> ...] [-v ...]
-       subgal make-thumbs --version
 
 Options:
   -r, --root-dir=<DIR>            Directory full of images and videos
