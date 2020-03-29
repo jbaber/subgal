@@ -172,7 +172,7 @@ def main(argv):
         "information into it")
     with open(json_filename, "r") as f:
       already_there = json.load(f)
-      correspondence = combine_dicts(correspondence, already_there)
+      correspondence = combine_dicts(already_there, correspondence)
 
   with open(json_filename, "w") as f:
     json.dump(correspondence, f, sort_keys=True, indent=2)
