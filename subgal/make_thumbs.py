@@ -180,29 +180,58 @@ def main(argv):
 
 def test_combine_dicts():
   x = {
-    1: [2, 3],
-    4: [5],
-    6: [],
-    8: [9, 10, 11],
+    1: {2: 3, 4: 5, 6: 7},
+    8: {9: 10},
+    11: {12: 13, 14: 15},
+    16: {17: 18},
+    19: {},
+    20: {},
+    21: {22: 23},
   }
   y = {
-    6: [13, 14],
-    8: [15],
-    11: [12],
-    16: [],
+    1: {2: 24, 4: 5, 8: 19},
+    2: {25: 26},
+    19: {27: 28, 29: 30},
+    23: {},
   }
-  assert(combine_dicts(x, y) == {
-    1: [2, 3],
-    4: [5],
-    6: [13, 14],
-    8: [15, 9, 10, 11],
-    11: [12],
-    16: [],
+  combined = combine_dicts(x, y)
+  assert(combined == {
+    1: {2: 24, 4: 5, 8: 19, 6: 7, 8: 19},
+    2: {25: 26},
+    8: {9: 10},
+    11: {12: 13, 14: 15},
+    16: {17: 18},
+    19: {27: 28, 29: 30},
+    20: {},
+    21: {22: 23},
+    23: {},
   })
 
 
+# TODO Do this efficiently
 def combine_dicts(x, y):
-  pass
+  to_return ={}
+  only_in_x = set(x.keys()).difference(y.keys())
+  only_in_y = set(y.keys()).difference(x.keys())
+  in_both = set(x.keys()).intersection(y.keys())
+
+  for key in only_in_x:
+    to_return[key] = {}
+    for subkey in x[key]:
+      to_return[key][subkey] = x[key][subkey]
+
+  for key in only_in_y:
+    to_return[key] = {}
+    for subkey in y[key]:
+      to_return[key][subkey] = y[key][subkey]
+
+  for key in in_both:
+    to_return[key] = {}
+    for subkey in x[key]:
+      to_return[key][subkey] = x[key][subkey]
+    for subkey in y[key]:
+      to_return[key][subkey] = y[key][subkey]
+  return to_return
 
 
 def can_be_thumbnailed(path):
