@@ -6,7 +6,8 @@ import subprocess
 
 
 __doc__ = """Usage: subgal <command> [<args>...]
-       subgal help
+       subgal --version
+       subgal --help
 
 Options:
 
