@@ -81,7 +81,9 @@ def create_main_index(main_index_filename, index_filenames):
     <ul>
     """)
     for index_filename in index_filenames:
-      f.write(f'<li><a class="myButton" href="{index_filename}">{os.path.splitext(index_filename)[0]}</a></li>')
+
+      # Don't show index_ or .html
+      f.write(f'<li><a class="myButton" href="{index_filename}">{os.path.splitext(index_filename)[0][6:]}</a></li>')
     f.write("""
     </ul>
     </div>
