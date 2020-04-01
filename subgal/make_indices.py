@@ -38,6 +38,59 @@ def directories_to_original_filenames(correlation):
   return to_return
 
 
+def create_main_index(main_index_filename, index_filenames):
+  with open(main_index_filename, 'w') as f:
+    f.write("""
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+
+<style>
+.myButton {
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+  text-decoration:none;
+  margin: .2em;
+}
+.myButton:hover {
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  background-color:#68a54b;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+</style>
+
+  </head>
+  <body>
+    <ul>
+    """)
+    for index_filename in index_filenames:
+      f.write(f'<li><a class="myButton" href="{index_filename}">{os.path.splitext(index_filename)[0]}</a></li>')
+    f.write("""
+    </ul>
+    </div>
+
+  </body>
+</html>
+    """)
+
+
 def create_index(index_filename, directory, correlations, verbosity=0,
     thumb_key="100x100", big_key="1000x1000"):
   v = verbosity
@@ -55,8 +108,40 @@ def create_index(index_filename, directory, correlations, verbosity=0,
     <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
 
+<style>
+.myButton {
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+  text-decoration:none;
+  margin: .2em;
+}
+.myButton:hover {
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  background-color:#68a54b;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+</style>
+
   </head>
   <body>
+    <h3>""")
+    f.write(directory)
+    f.write("""</h3>
+  <a class="myButton" href=""")
+    f.write(main_index_filename)
+    f.write(""">Index</a>
     <div ID="ngy2p" data-nanogallery2='{
         "itemsBaseURL": "./",
         "thumbnailWidth": "auto",
@@ -85,7 +170,7 @@ def create_index(index_filename, directory, correlations, verbosity=0,
     # After the images part
     f.write("""
     </div>
-    
+
   </body>
 </html>
     """)
@@ -105,13 +190,16 @@ def main(argv):
 
   dtoof = directories_to_original_filenames(correlations)
 
+  index_filenames = []
   for directory in dtoof.keys():
     index_filename = "index_" + directory.replace(os.path.sep, "__") + ".html"
+    index_filenames.append(index_filename)
     try:
       create_index(index_filename, directory, correlations,
           verbosity=verbosity)
     except ValueError as e:
       vprint(1, v, "Missing some thumbs")
+  create_main_index(os.path.join(index_root, "index.html"), index_filenames)
 
 
 if __name__ == "__main__":
