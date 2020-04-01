@@ -43,9 +43,31 @@ def create_index(index_filename, directory, correlations, verbosity=0,
   v = verbosity
   vprint(1, v, f"Creating {index_filename}")
   with open(index_filename, 'w') as f:
+
+    # The before-images part
+    f.write("""
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+
+  </head>
+  <body>
+    <div ID="ngy2p" data-nanogallery2='{
+        "itemsBaseURL": "./",
+        "thumbnailWidth": "auto",
+        "galleryDisplayMode": "moreButton",
+        "thumbnailAlignment": "center"
+      }'>
+    """)
     for original_filename in correlations:
       if os.path.dirname(original_filename) == directory:
         vprint(2, v, f"  {original_filename}")
+        basename = os.path.basename(original_filename)
 
         # Here's where there are choices  I'm mapping one thumbnail to
         # another because originals are always so big
@@ -58,7 +80,15 @@ def create_index(index_filename, directory, correlations, verbosity=0,
           vprint(1, v, message)
           raise ValueError(message)
 
-        f.write(f"thumb: {thumb}\nbig: {big}\n")
+        f.write(f'<a href="{big}" data-ngthumb="{thumb}" data-ngdesc="">{basename}</a>')
+
+    # After the images part
+    f.write("""
+    </div>
+    
+  </body>
+</html>
+    """)
 
 
 def main(argv):

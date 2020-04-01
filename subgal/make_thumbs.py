@@ -41,8 +41,8 @@ Options:
                                   multiple sizes of thumbnails.  If no -b
                                   arguments are given, defaults to 600x400.
 """.format(sys.argv[0],
-        os.path.join(os.path.abspath(os.path.curdir), "images"),
-        os.path.join(os.path.abspath(os.path.curdir), "thumbs"))
+        os.path.join("./images"),
+        os.path.join("./thumbs"))
 
 
 from docopt import docopt
