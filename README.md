@@ -49,4 +49,10 @@ From inside the git repository:
     subgal host
 
 
+CAVEATS
+-------
+
+Videos aren't working yet.
+
+
 [sortphotos]: https://github.com/andrewning/sortphotos
