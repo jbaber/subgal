@@ -7,7 +7,12 @@ It depends on ffmpeg and imagemagick already being installed.
 Installation
 ------------
 
+Install `ffmpeg` and `imagemagick`
+Install `libjpeg-dev`
+Then
+
     pip install subgal
+
 
 Help
 ----
