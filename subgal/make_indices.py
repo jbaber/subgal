@@ -92,7 +92,7 @@ def create_main_index(main_index_filename, index_filenames):
 
 
 def create_index(index_filename, directory, correlations, verbosity=0,
-    thumb_key="100x100", big_key="1000x1000"):
+    thumb_key="300x300", big_key="1000x1000", main_index_filename="index.html"):
   v = verbosity
   vprint(1, v, f"Creating {index_filename}")
   with open(index_filename, 'w') as f:
