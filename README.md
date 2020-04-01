@@ -12,7 +12,7 @@ Installation
 Help
 ----
 
-    subgal help
+    subgal --help
 
 for main help
 
