@@ -39,7 +39,8 @@ Options:
   -b, --bounding-box=<600x400>    Bounding box for thumbnails.  Any two numbers
                                   separated by an 'x'.  Multiple -b's yields
                                   multiple sizes of thumbnails.  If no -b
-                                  arguments are given, defaults to 600x400.
+                                  arguments are given, defaults to
+                                  "-b 1000x1000 -b 300x300".
 """.format(sys.argv[0],
         os.path.join("./images"),
         os.path.join("./thumbs"))
@@ -126,7 +127,8 @@ def main(argv):
 
   size_tuples = []
   if bounds == []:
-    size_tuples.append((600, 400))
+    size_tuples.append((300, 300))
+    size_tuples.append((1000, 1000))
   else:
     for bound in bounds:
       try:
