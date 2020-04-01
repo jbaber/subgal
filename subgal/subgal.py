@@ -14,7 +14,6 @@ Options:
 Commands:
   make-thumbs
   make-indices
-  update
   host
 
 See 'subgal <command> --help' for more information on a specific command."""
