@@ -25,15 +25,28 @@ subgal make-thumbs
 
 `subgal make-thumbs` creates a directory full of thumbnails indexed by sha256 and outputs the correspondence to a json file.
 
-EXAMPLE
-
-    subgal make-thumbs -r example_images
-
-
 subgal make-indices
 -------------------
 
 `subgal make-indices` creates .html files which are a gallery of images based on a json file as output by `subgal make-thumbs`
+
+subgal host
+-----------
+
+Serve files in current directory as a web server
+for testing.
+
+SECURITY WARNING: DON'T USE THIS UNLESS YOU ARE INSIDE A FIREWALL
+-- it may execute arbitrary Python code or external programs.
+
+EXAMPLE
+-------
+
+From inside the git repository:
+
+    subgal make-thumbs -r example_images
+    subgal make-indices correlations.json
+    subgal host
 
 
 [sortphotos]: https://github.com/andrewning/sortphotos
