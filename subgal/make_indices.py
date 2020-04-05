@@ -4,7 +4,6 @@ import sys
 import os
 import json
 import collections
-from string import Template
 
 DEFAULT_BASE_URL = "http://localhost:8080/"
 
@@ -40,54 +39,143 @@ def directories_to_original_filenames(correlation):
 
 
 def create_main_index(main_index_filename, index_filenames):
-  individual_index_links = ""
-  for index_filename in index_filenames:
-
-    # Don't show index_ or .html
-    individual_index_links += f'<li><a class="myButton" href="{index_filename}">{os.path.splitext(index_filename)[0][6:]}</a></li>\n'
-
-  import pkg_resources
-  main_index_template = pkg_resources.resource_stream("subgal", "templates/main_index_template.html")
-  main_index_template = Template(main_index_template.read().decode('utf-8'))
-
   with open(main_index_filename, 'w') as f:
-    f.write(main_index_template.substitute({'individual_index_links': individual_index_links}))
+    f.write("""
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+
+<style>
+.myButton {
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+  text-decoration:none;
+  margin: .2em;
+}
+.myButton:hover {
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  background-color:#68a54b;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+</style>
+
+  </head>
+  <body>
+    <ul>
+    """)
+    for index_filename in index_filenames:
+
+      # Don't show index_ or .html
+      f.write(f'<li><a class="myButton" href="{index_filename}">{os.path.splitext(index_filename)[0][6:]}</a></li>')
+    f.write("""
+    </ul>
+    </div>
+
+  </body>
+</html>
+    """)
 
 
 def create_index(index_filename, directory, correlations, verbosity=0,
     thumb_key="300x300", big_key="1000x1000", main_index_filename="index.html"):
   v = verbosity
   vprint(1, v, f"Creating {index_filename}")
-
-  image_anchors = ""
-  for original_filename in correlations:
-    if os.path.dirname(original_filename) == directory:
-      vprint(2, v, f"  {original_filename}")
-      basename = os.path.basename(original_filename)
-
-      # Here's where there are choices  I'm mapping one thumbnail to
-      # another because originals are always so big
-      try:
-        thumb = correlations[original_filename][thumb_key]
-        big = correlations[original_filename][big_key]
-      except KeyError as e:
-        message = f"Either {thumb_key} or {big_key} doesn't exist " \
-            + f"for {original_filename}"
-        vprint(1, v, message)
-        raise ValueError(message)
-
-      image_anchors += f'<a href="{big}" data-ngthumb="{thumb}" data-ngdesc="">{basename}</a>'
-
-  import pkg_resources
-  individual_index_template = pkg_resources.resource_stream("subgal", "templates/individual_index_template.html")
-  individual_index_template = Template(individual_index_template.read().decode('utf-8'))
-
   with open(index_filename, 'w') as f:
-    f.write(individual_index_template.substitute({
-      'image_anchors': image_anchors,
-      'directory': directory,
-      'main_index_filename': main_index_filename
-    }))
+
+    # The before-images part
+    f.write("""
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+
+<style>
+.myButton {
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+  text-decoration:none;
+  margin: .2em;
+}
+.myButton:hover {
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  background-color:#68a54b;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+</style>
+
+  </head>
+  <body>
+    <h3>""")
+    f.write(directory)
+    f.write("""</h3>
+  <a class="myButton" href=""")
+    f.write(main_index_filename)
+    f.write(""">Index</a>
+    <div ID="ngy2p" data-nanogallery2='{
+        "itemsBaseURL": "./",
+        "thumbnailWidth": "auto",
+        "galleryDisplayMode": "moreButton",
+        "thumbnailAlignment": "center"
+      }'>
+    """)
+    for original_filename in correlations:
+      if os.path.dirname(original_filename) == directory:
+        vprint(2, v, f"  {original_filename}")
+        basename = os.path.basename(original_filename)
+
+        # Here's where there are choices  I'm mapping one thumbnail to
+        # another because originals are always so big
+        try:
+          thumb = correlations[original_filename][thumb_key]
+          big = correlations[original_filename][big_key]
+        except KeyError as e:
+          message = f"Either {thumb_key} or {big_key} doesn't exist " \
+              + f"for {original_filename}"
+          vprint(1, v, message)
+          raise ValueError(message)
+
+        f.write(f'<a href="{big}" data-ngthumb="{thumb}" data-ngdesc="">{basename}</a>')
+
+    # After the images part
+    f.write("""
+    </div>
+
+  </body>
+</html>
+    """)
 
 
 def main(argv):
