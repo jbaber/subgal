@@ -147,8 +147,11 @@ def create_index(index_filename, directory, correlations, verbosity=0,
     <div ID="ngy2p" data-nanogallery2='{
         "itemsBaseURL": "./",
         "thumbnailWidth": "auto",
-        "galleryDisplayMode": "moreButton",
-        "thumbnailAlignment": "center"
+        "galleryDisplayMode": "pagination",
+        "thumbnailAlignment": "center",
+        "galleryMaxRows": 20,
+        "galleryPaginationMode": "numbers",
+        "gallerySorting": "random"
       }'>
     """)
     for original_filename in correlations:
