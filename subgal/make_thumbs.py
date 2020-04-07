@@ -283,6 +283,12 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
     s_dimension = f"{size_tuple[0]}x{size_tuple[1]}"
     thumb_path = os.path.join(thumb_dir, f"{s_dimension}.jpg")
     vprint(1, verbosity, f"Creating {s_dimension} thumb at {thumb_path}")
+
+    # Notice adding to correspondence even if thumb was previously created
+    # This ensures ever noticed thumbnail is accounted for.
+    if correspondence != None:
+      correspondence[filename][s_dimension] = thumb_path
+
     if os.path.exists(thumb_path) and not force:
       vprint(1, verbosity, f"{thumb_path} already exists.  If you want it "
           "clobbered, pass -f flag.")
@@ -290,8 +296,6 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
 
     try:
       create_thumbnail(filename, thumb_path, size_tuple, verbosity)
-      if correspondence != None:
-        correspondence[filename][s_dimension] = thumb_path
     except OSError as e:
       vprint(1, verbosity, f"Error thumbnailing {filename}: {str(e)}")
       return
