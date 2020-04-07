@@ -265,6 +265,7 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
   """
   @returns (path_of_filename, paths_of_thumbnails) on success
   """
+  vprint(2, verbosity, f"Dealing {filename}")
   if size_tuples == None:
     size_tuples = [(120, 120)]
 
