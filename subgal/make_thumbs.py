@@ -275,14 +275,14 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
     correspondence[filename] = {}
 
   thumb_dir = os.path.join(thumb_root_dir_name, hashhex)
-  vprint(1, verbosity, f"Putting thumbs in {thumb_dir}")
+  vprint(1, verbosity, f"  Putting thumbs in {thumb_dir}")
 
   mkdir_exist(thumb_dir, dryrun=dryrun, verbosity=verbosity)
 
   for size_tuple in size_tuples:
     s_dimension = f"{size_tuple[0]}x{size_tuple[1]}"
     thumb_path = os.path.join(thumb_dir, f"{s_dimension}.jpg")
-    vprint(1, verbosity, f"Creating {s_dimension} thumb at {thumb_path}")
+    vprint(1, verbosity, f"    Creating {s_dimension} thumb at {thumb_path}")
 
     # Notice adding to correspondence even if thumb was previously created
     # This ensures ever noticed thumbnail is accounted for.
