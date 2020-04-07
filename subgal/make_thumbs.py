@@ -301,6 +301,9 @@ def deal_with(filename, thumb_root_dir_name, verbosity=0, size_tuples=None,
     except IOError as e:
       vprint(1, verbosity, f"I can tell {filename} is an image file, but the image library I use cannot handle it.  (Got error {str(e)})")
       return
+    except ZeroDivisionError as e:
+      vprint(1, verbosity, f"I can tell {filename} is an image file, but the image library I use cannot handle it.  (Got error {str(e)})")
+      return
 
 
 def create_thumbnail_from_image(filename, thumb_filename, size_tuple):
