@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
   name = "subgal",
-  version = "1.0.0",
+  version = "1.0.2",
   author = "John Baber-Lucero",
   author_email = "pypi@frundle.com",
   description = ("A collection of tools for creating html galleries from photos that have been sorted by sortphotos"),

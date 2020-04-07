@@ -20,7 +20,7 @@ See 'subgal <command> --help' for more information on a specific command."""
 
 
 def main():
-  args = docopt(__doc__, version='1.0.0', options_first=True)
+  args = docopt(__doc__, version='1.0.2', options_first=True)
   argv = [args['<command>']] + args['<args>']
 
   if args['<command>'] in ('help', None):
